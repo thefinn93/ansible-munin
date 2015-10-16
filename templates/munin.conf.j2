@@ -1,0 +1,19 @@
+{% for host in groups[munin_nodes_group] %}
+[{{ host }}]
+    address {{ host }}
+{% if hostvars[host]['munin_port'] is defined %}
+    port {{ hostvars[host]['munin_port'] }}
+    {% endif %}
+
+{% endfor %}
+
+{% if munin_extra_hosts is defined %}
+{% for host in munin_extra_hosts %}
+[{{ host }}]
+{% for key,value in munin_extra_hosts[host].iteritems() %}
+    {{ key }} {{ value }}
+{% endfor %}
+
+{% endfor %}
+
+{% endif %}

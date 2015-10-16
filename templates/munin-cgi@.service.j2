@@ -1,0 +1,10 @@
+[Unit]
+Description=Munin CGI service
+After=nss-user-lookup.target
+
+[Service]
+ExecStart=/usr/bin/spawn-fcgi -n -s {{ munin_cgi_socket_prefix }}%i.sock -U {{ munin_socket_user }} -G {{ munin_socket_group }} -u {{ munin_cgi_user }} -g {{ munin_cgi_group }} -P {{ munin_cgi_pid_prefix }}%i.pid {{ munin_cgi_prefix }}%i
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

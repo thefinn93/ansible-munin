@@ -1,0 +1,47 @@
+---
+  - name: Install depends
+    apt: name={{ item }} state=installed
+    with_items:
+      - nginx
+      - munin
+      - fcgiwrap
+
+  - name: Template nginx conf
+    template: src=nginx-munin.conf.j2 dest={{ munin_nginx_path }}
+    notify:
+      - Reload nginx
+
+  - name: Add munin vhost
+    template: src=nginx-vhost.conf.j2 dest=/etc/nginx/sites-available/munin.conf
+    notify:
+      - Reload nginx
+    when: munin_replace_default_vhost
+
+  - name: Enable munin vhost
+    file: src=/etc/nginx/sites-available/munin.conf dest=/etc/nginx/sites-enabled/munin.conf state=link
+    notify:
+      - Reload nginx
+    when: munin_replace_default_vhost
+
+  - name: Fix log file permissions
+    file: path={{ munin_log_prefix }}{{ item}}.log owner={{ munin_cgi_user }}
+    with_items:
+      - html
+      - graph
+
+  - name: Install cgi service
+    template: src=munin-cgi@.service.j2 dest=/etc/systemd/system/munin-cgi@.service
+    notify:
+      - Reload systemd
+      - Restart munin-cgi services
+
+  - meta: flush_handlers
+
+  - name: Enable munin cgi services
+    service: name=munin-cgi@{{ item }} state=started enabled=yes
+    with_items:
+      - html
+      - graph
+
+  - name: Configure munin
+    template: src=munin.conf.j2 dest=/etc/munin/munin.conf

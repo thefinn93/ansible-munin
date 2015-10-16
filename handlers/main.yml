@@ -1,0 +1,12 @@
+---
+  - name: Reload systemd
+    command: systemctl daemon-reload
+
+  - name: Restart munin-cgi services
+    service: name=munin-cgi@{{ item }} state=restarted
+    with_items:
+      - html
+      - graph
+
+  - name: Reload nginx
+    service: name=nginx state=reloaded

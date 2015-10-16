@@ -1,0 +1,12 @@
+---
+  munin_nginx_path: /etc/nginx/munin.conf
+  munin_replace_default_vhost: yes
+  munin_cgi_socket_prefix: /var/run/munin/fastcgi-munin-
+  munin_cgi_pid_prefix: /var/run/munin/fastcgi-munin-
+  munin_cgi_prefix: /usr/lib/munin/cgi/munin-cgi-
+  munin_socket_user: www-data
+  munin_socket_group: www-data
+  munin_cgi_user: munin
+  munin_cgi_group: munin
+  munin_log_prefix: /var/log/munin/munin-cgi-
+  munin_nodes_group: munin_nodes
