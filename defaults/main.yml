@@ -9,4 +9,3 @@
   munin_cgi_user: munin
   munin_cgi_group: munin
   munin_log_prefix: /var/log/munin/munin-cgi-
-  munin_nodes_group: munin_nodes

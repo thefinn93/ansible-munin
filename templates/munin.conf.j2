@@ -1,3 +1,4 @@
+{% if munin_nodes_group is defined %}
 {% for host in groups[munin_nodes_group] %}
 [{{ host }}]
     address {{ host }}
@@ -6,7 +7,7 @@
     {% endif %}
 
 {% endfor %}
-
+{% endif %}
 {% if munin_extra_hosts is defined %}
 {% for host in munin_extra_hosts %}
 [{{ host }}]
